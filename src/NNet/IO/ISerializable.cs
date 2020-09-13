@@ -1,6 +1,6 @@
 namespace NNet.IO
 {
-    public interface ISerializeable
+    public interface ISerializable
     {
         ISerializer Serializer { get; }
 
