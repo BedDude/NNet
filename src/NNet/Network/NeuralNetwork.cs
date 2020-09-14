@@ -46,27 +46,18 @@ namespace NNet
             Serializer.WriteWeights();
         }
 
-        public static implicit operator NeuralNetwork(NonSerializableBuilderResult builderResult)
+        public static implicit operator NeuralNetwork(BuilderResult result)
         {
-            return new NeuralNetwork
-            {
-                Layers = builderResult.Layers,
-                LayersCount = builderResult.LayersCount,
-                InputSize = builderResult.InputSize,
-                OutputSize = builderResult.OutputSize,
-                Serializer = null
-            };
-        }
+            var layersCount = result.Layers.Length;
+            var outputSize = result.Layers[layersCount].NeuronsCount;
 
-        public static implicit operator NeuralNetwork(SerializableBuilderResult builderResult)
-        {
             return new NeuralNetwork
             {
-                Layers = builderResult.Layers,
-                LayersCount = builderResult.LayersCount,
-                InputSize = builderResult.InputSize,
-                OutputSize = builderResult.OutputSize,
-                Serializer = builderResult.Serializer
+                Layers = result.Layers,
+                LayersCount = layersCount,
+                InputSize = result.InputSize,
+                OutputSize = outputSize,
+                Serializer = result.Serializer
             };
         }
     }
