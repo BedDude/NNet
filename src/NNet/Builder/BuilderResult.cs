@@ -8,5 +8,7 @@ namespace NNet.Builder
         public int InputSize { get; set; }
         public INeuronsLayer[] Layers { get; set; }
         public ISerializer Serializer { get; set; }
+
+        public NeuralNetwork ToNetwork() => this;
     }
 }

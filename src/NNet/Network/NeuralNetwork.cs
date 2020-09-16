@@ -17,8 +17,11 @@ namespace NNet
 
         public void CreateConfig(string fileName)
         {
-            Serializer.ConfigFileName = fileName;
-            Serializer.WriteConfig();
+            if (Serializer != null)
+            {
+                Serializer.ConfigFileName = fileName;
+                Serializer.WriteConfig();
+            }
         }
 
         public double[] GetResult(double[] input)
@@ -26,7 +29,7 @@ namespace NNet
             _lastInput = input;
 
             double[] currentInput;
-            for(int i = 0; i < LayersCount; i++)
+            for (int i = 0; i < LayersCount; i++)
             {
                 currentInput = i == 0 ? input : Layers[i - 1].Value;
 
@@ -38,12 +41,19 @@ namespace NNet
 
         public void Learn(double[] error, double rate)
         {
-            throw new System.NotImplementedException();
+            Layers[LayersCount - 1].Error = error;
+            for (int i = LayersCount - 1; i >= 1; i--)
+            {
+                Layers[i].TranslateError(Layers[i - 1]);
+
+                Layers[i].Learn(Layers[i - 1].Value, rate);
+            }
+            Layers[0].Learn(_lastInput, rate);
         }
 
         public void SaveWeights()
         {
-            Serializer.WriteWeights();
+            Serializer?.WriteWeights();
         }
 
         public static implicit operator NeuralNetwork(BuilderResult result)

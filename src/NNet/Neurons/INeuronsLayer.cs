@@ -13,6 +13,6 @@ namespace NNet.Neurons
 
         void Active(double[] input);
         void Learn(double[] input, double rate);
-        void TranslateError();
+        void TranslateError(INeuronsLayer previousLayer);
     }
 }
