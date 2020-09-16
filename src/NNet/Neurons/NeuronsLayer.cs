@@ -7,8 +7,8 @@ namespace NNet.Neurons
     public class NeuronsLayer : INeuronsLayer
     {
         private ActivationFunctionType _functionType;
-        private Func<double[], double[,], double[]> _activationFunction;
-        private Func<NeuronsLayer, double[], double, double[,]> _trainingFunction;
+        private Func<double[], INeuronsLayer, double[]> _activationFunction;
+        private Func<INeuronsLayer, double[], double, double[,]> _trainingFunction;
 
         public int NeuronsCount { get; private set; }
         public double[] Value { get; private set; }
@@ -27,9 +27,17 @@ namespace NNet.Neurons
             }
         }
 
+        public NeuronsLayer(int size)
+        {
+            NeuronsCount = size;
+            Value = new double[size];
+            Bias = new double[size];
+            Error = new double[size];
+        }
+
         public void Active(double[] input)
         {
-            Value = _activationFunction?.Invoke(input, Weights);
+            Value = _activationFunction?.Invoke(input, this);
         }
 
         public void Learn(double[] input, double rate)
