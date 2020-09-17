@@ -5,6 +5,7 @@ namespace NNet.Neurons
     public interface INeuronsLayer
     {
         int NeuronsCount { get; }
+        int InputSize { get; }
         double[] Value { get; }
         double[] Bias { get; set; }
         double[] Error { get; set; }

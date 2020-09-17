@@ -11,6 +11,7 @@ namespace NNet.Neurons
         private Func<INeuronsLayer, double[], double, double[,]> _trainingFunction;
 
         public int NeuronsCount { get; private set; }
+        public int InputSize { get; private set; }
         public double[] Value { get; private set; }
         public double[] Bias { get; set; }
         public double[] Error { get; set; }
@@ -27,12 +28,15 @@ namespace NNet.Neurons
             }
         }
 
-        public NeuronsLayer(int size)
+        public NeuronsLayer(int size, int inputSize)
         {
             NeuronsCount = size;
+            InputSize = inputSize;
+
             Value = new double[size];
             Bias = new double[size];
             Error = new double[size];
+            Weights = new double[inputSize, size];
         }
 
         public void Active(double[] input)
