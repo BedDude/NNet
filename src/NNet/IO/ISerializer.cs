@@ -9,9 +9,9 @@ namespace NNet.IO
         string ConfigFileName { get; set; }
         Dictionary<INeuronsLayer, string> FilesTable { get; set; }
 
-        double[,] ReadWeights();
-        void WriteWeights();
-        INeuronsLayer[] ReadConfig();
-        void WriteConfig();
+        double[,] ReadWeights(string file);
+        void WriteWeights(string file);
+        (int, INeuronsLayer[]) ReadConfig();
+        void CreateConfig();
     }
 }

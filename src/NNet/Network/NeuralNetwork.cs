@@ -17,11 +17,7 @@ namespace NNet
 
         public void CreateConfig(string fileName)
         {
-            if (Serializer != null)
-            {
-                Serializer.ConfigFileName = fileName;
-                Serializer.WriteConfig();
-            }
+            throw new System.NotImplementedException();
         }
 
         public double[] GetResult(double[] input)
@@ -53,7 +49,7 @@ namespace NNet
 
         public void SaveWeights()
         {
-            Serializer?.WriteWeights();
+            throw new System.NotImplementedException();
         }
 
         public static implicit operator NeuralNetwork(BuilderResult result)
