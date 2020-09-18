@@ -4,7 +4,6 @@ using NNet.Neurons;
 
 namespace NNet.Functions
 {
-    //пока internal, а там как пойдет
     internal static class CalculationFunctions
     {
         public static Func<double[], INeuronsLayer, double[]> GetActivationFunction(ActivationFunctionType functionType)
@@ -21,7 +20,7 @@ namespace NNet.Functions
                     sumOfInputs = 0;
                     for (int j = 0; j < input.Length; j++)
                     {
-                        sumOfInputs += input[i] * layer.Weights[j, i];
+                        sumOfInputs += input[j] * layer.Weights[j, i];
                     }
                     sumOfInputs += layer.Bias[i];
 
