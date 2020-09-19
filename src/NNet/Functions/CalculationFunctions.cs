@@ -31,20 +31,21 @@ namespace NNet.Functions
             };
         }
 
-        public static Func<INeuronsLayer, double[], double, double[,]> GetFunc(ActivationFunctionType functionType)
+        public static Func<INeuronsLayer, double[], double, (double[,], double[])> GetFunc(ActivationFunctionType functionType)
         {
             var derivative = GetDerivative(functionType);
 
             return (layer, input, rate) =>
             {
-                var result = layer.Weights.Clone() as double[,];
+                var result = (layer.Weights.Clone() as double[,], layer.Bias.Clone() as double[]);
 
                 for(int i= 0; i < layer.NeuronsCount; i++)
                 {
                     for(int j = 0; j < input.Length; j++)
                     {
-                        result[j, i] += rate * layer.Error[i] * input[j] * derivative(layer.Value[i]);
+                        result.Item1[j, i] += rate * layer.Error[i] * input[j] * derivative(layer.Value[i]);
                     }
+                    result.Item2[i] += rate * layer.Error[i] * derivative(layer.Value[i]);
                 }
 
                 return result;

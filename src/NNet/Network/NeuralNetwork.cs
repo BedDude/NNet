@@ -17,7 +17,7 @@ namespace NNet
 
         public void CreateConfig(string fileName)
         {
-            throw new System.NotImplementedException();
+            Serializer.CreateConfig(fileName);
         }
 
         public double[] GetResult(double[] input)
@@ -49,17 +49,20 @@ namespace NNet
 
         public void SaveWeights()
         {
-            throw new System.NotImplementedException();
+            foreach(var layer in Serializer.FilesTable.Keys)
+            {
+                Serializer.WriteWeights(layer, Serializer.FilesTable[layer]);
+            }
         }
 
         public static implicit operator NeuralNetwork(BuilderResult result)
         {
-            var layersCount = result.Layers.Length;
-            var outputSize = result.Layers[layersCount].NeuronsCount;
+            var layersCount = result.Layers.Count;
+            var outputSize = layersCount == 0 ? 0 : result.Layers[layersCount - 1].NeuronsCount;
 
             return new NeuralNetwork
             {
-                Layers = result.Layers,
+                Layers = result.Layers.ToArray(),
                 LayersCount = layersCount,
                 InputSize = result.InputSize,
                 OutputSize = outputSize,

@@ -8,7 +8,7 @@ namespace NNet.Neurons
     {
         private ActivationFunctionType _functionType;
         private Func<double[], INeuronsLayer, double[]> _activationFunction;
-        private Func<INeuronsLayer, double[], double, double[,]> _trainingFunction;
+        private Func<INeuronsLayer, double[], double, (double[,], double[])> _trainingFunction;
 
         public int NeuronsCount { get; private set; }
         public int InputSize { get; private set; }
@@ -46,7 +46,10 @@ namespace NNet.Neurons
 
         public void Learn(double[] input, double rate)
         {
-            Weights = _trainingFunction?.Invoke(this, input, rate);
+            var result = _trainingFunction?.Invoke(this, input, rate);
+
+            Weights = result.Value.Item1;
+            Bias = result.Value.Item2;
         }
 
         public void TranslateError(INeuronsLayer previousLayer)
