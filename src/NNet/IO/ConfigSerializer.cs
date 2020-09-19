@@ -71,6 +71,8 @@ namespace NNet.IO
                 var basePath = Path.Join(file, @"../", localStorage["path_to_weights"]);
                 for (int i = 0; i < layersCount; i++)
                 {
+                    localStorage.Clear();
+
                     reader.ReadLine();
                     for (int j = 0; j < 4; j++)
                     {
@@ -91,8 +93,6 @@ namespace NNet.IO
                     result.Item2.Add(newLayer);
 
                     FilesTable.Add(newLayer, weightsFile);
-
-                    localStorage.Clear();
                 }
             }
 
