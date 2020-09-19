@@ -101,7 +101,7 @@ namespace NNet.Test.Network
         [TestMethod]
         public void BuildFromConfigFile()
         {
-            var result = NeuralNetwork.Builder.BuildFromConfig(@"./../../../NNet/Network/test.ncfg")
+            var result = NeuralNetwork.Builder.BuildFromConfig(@"./../../../Network/test.ncfg")
                                               .ToNetwork();
 
             Assert.AreEqual(2, result.InputSize);
