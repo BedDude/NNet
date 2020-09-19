@@ -15,9 +15,9 @@ namespace NNet
         public ISerializer Serializer { get; private set; }
         public static NeuralNetworkBuilder Builder => new NeuralNetworkBuilder();
 
-        public void CreateConfig(string fileName)
+        public void CreateConfig(string pathToDir, string name)
         {
-            Serializer.CreateConfig(fileName);
+            Serializer.CreateConfig(this, pathToDir, name);
         }
 
         public double[] GetResult(double[] input)

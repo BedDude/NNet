@@ -4,7 +4,7 @@ namespace NNet.IO
     {
         ISerializer Serializer { get; }
 
-        void CreateConfig(string fileName);
+        void CreateConfig(string pathToDir, string name);
         void SaveWeights();
     }
 }

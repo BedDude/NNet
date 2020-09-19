@@ -6,12 +6,11 @@ namespace NNet.IO
 {
     public interface ISerializer
     {
-        string ConfigFileName { get; set; }
         Dictionary<INeuronsLayer, string> FilesTable { get; set; }
 
-        double[,] ReadWeights(string file);
-        void WriteWeights(string file);
-        (int, INeuronsLayer[]) ReadConfig();
-        void CreateConfig();
+        void ReadWeights(INeuronsLayer layer, string file);
+        void WriteWeights(INeuronsLayer layer, string file);
+        (int, List<INeuronsLayer>) ReadConfig(string file);
+        void CreateConfig(INeuralNetwork network, string pathToDir, string name);
     }
 }
