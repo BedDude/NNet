@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NNet\NNet.csproj" />
+    <ProjectReference Include="..\src\NNet.csproj" />
   </ItemGroup>
 
 </Project>
