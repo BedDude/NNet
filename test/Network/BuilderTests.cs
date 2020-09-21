@@ -34,31 +34,6 @@ namespace NNet.Test.Network
         }
 
         [TestMethod]
-        public void AddLayer_InputIsSizesAndFunctions_ResultsLayersCountIs3()
-        {
-            var result = NeuralNetwork.Builder.AddNeurons(1, 2, 3)
-                                              .AddFunctions(ActivationFunctionType.Linear, 
-                                                            ActivationFunctionType.Linear,
-                                                            ActivationFunctionType.Linear)
-                                              .Build()
-                                              .ToNetwork();
-
-            Assert.AreEqual(3, result.LayersCount);
-        }
-
-        [TestMethod]
-        public void AddLayer_InputIsSizesAndFunctions_ResultsLayersCountIs2()
-        {
-            var result = NeuralNetwork.Builder.AddNeurons(1, 2, 3, 4, 5)
-                                              .AddFunctions(ActivationFunctionType.Linear, 
-                                                            ActivationFunctionType.Linear)
-                                              .Build()
-                                              .ToNetwork();
-
-            Assert.AreEqual(2, result.LayersCount);
-        }
-
-        [TestMethod]
         public void SetSerializer_InputIsNone_ReturnIsNull()
         {
             var result = NeuralNetwork.Builder.SetSerializer(SerializerType.None)

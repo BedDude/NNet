@@ -73,25 +73,5 @@ namespace NNet.Builder
 
             return this;
         }
-
-        public NeuralNetworkBuilder AddNeurons(params int[] neuronsCounts)
-        {
-            foreach (var neuronsCount in neuronsCounts)
-            {
-                _neurons.Enqueue(neuronsCount);
-            }
-
-            return this;
-        }
-
-        public NeuralNetworkBuilder AddFunctions(params ActivationFunctionType[] functions)
-        {
-            foreach (var function in functions)
-            {
-                _functions.Enqueue(function);
-            }
-
-            return this;
-        }
     }
 }

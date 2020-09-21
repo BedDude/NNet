@@ -11,8 +11,8 @@ namespace NNet.Test.Network
         public void IsConvertCorrect_InputIsBuilderResult_ResultIsConvertedNetwork()
         {
             var test = NeuralNetwork.Builder.SetInputSize(2)
-                                            .AddNeurons(1, 2)
-                                            .AddFunctions(ActivationFunctionType.Linear, ActivationFunctionType.LReLU)
+                                            .AddLayer(1, ActivationFunctionType.Linear)
+                                            .AddLayer(2, ActivationFunctionType.LReLU)
                                             .Build();
 
             NeuralNetwork result = test;
