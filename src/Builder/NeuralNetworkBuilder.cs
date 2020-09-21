@@ -9,27 +9,23 @@ namespace NNet.Builder
 {
     public class NeuralNetworkBuilder
     {
-        private Queue<int> _neurons;
-        private Queue<ActivationFunctionType> _functions;
         private BuilderResult _result;
+        private List<(int, ActivationFunctionType)> _pairs;
 
         public NeuralNetworkBuilder()
         {
             _result = new BuilderResult();
-            _neurons = new Queue<int>();
-            _functions = new Queue<ActivationFunctionType>();
+            _pairs = new List<(int, ActivationFunctionType)>();
         }
 
         public BuilderResult Build()
         {
-            var layersCount = Math.Min(_neurons.Count, _functions.Count);
-            for (int i = 0; i < layersCount; i++)
+            for (int i = 0; i < _pairs.Count; i++)
             {
-                var neuronsCount = _neurons.Dequeue();
                 var inputSize = i == 0 ? _result.InputSize : _result.Layers[i - 1].NeuronsCount;
 
-                var newLayer = new NeuronsLayer(neuronsCount, inputSize);
-                newLayer.ActivationFunction = _functions.Dequeue();
+                var newLayer = new NeuronsLayer(_pairs[i].Item1, inputSize);
+                newLayer.ActivationFunction = _pairs[i].Item2;
 
                 _result.Layers.Add(newLayer);
             }
@@ -68,8 +64,7 @@ namespace NNet.Builder
 
         public NeuralNetworkBuilder AddLayer(int neuronsCount, ActivationFunctionType type)
         {
-            _neurons.Enqueue(neuronsCount);
-            _functions.Enqueue(type);
+            _pairs.Add((neuronsCount, type));
 
             return this;
         }
