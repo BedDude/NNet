@@ -40,7 +40,7 @@ namespace NNet.Builder
         public BuilderResult BuildFromConfig(string file)
         {
             _result.Serializer = new ConfigSerializer();
-            var configResult = _result.Serializer.ReadConfig(file);
+            var configResult = _result.Serializer.ReadNetworkFile(file);
 
             _result.InputSize = configResult.Item1;
             _result.Layers = configResult.Item2;

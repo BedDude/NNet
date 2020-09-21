@@ -10,7 +10,7 @@ namespace NNet.IO
 
         void ReadWeights(INeuronsLayer layer, string file);
         void WriteWeights(INeuronsLayer layer, string file);
-        (int, List<INeuronsLayer>) ReadConfig(string file);
-        void CreateConfig(INeuralNetwork network, string pathToDir, string name);
+        (int, List<INeuronsLayer>) ReadNetworkFile(string file);
+        void CreateNetworkFile(INeuralNetwork network, string pathToDir, string name);
     }
 }

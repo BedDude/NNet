@@ -16,7 +16,7 @@ namespace NNet.IO
             FilesTable = new Dictionary<INeuronsLayer, string>();
         }
 
-        public void CreateConfig(INeuralNetwork network, string pathToDir, string name)
+        public void CreateNetworkFile(INeuralNetwork network, string pathToDir, string name)
         {
             var basis = Path.Join(pathToDir, name);
             var file = basis + ".ncfg";
@@ -47,7 +47,7 @@ namespace NNet.IO
             }
         }
 
-        public (int, List<INeuronsLayer>) ReadConfig(string file)
+        public (int, List<INeuronsLayer>) ReadNetworkFile(string file)
         {
             (int, List<INeuronsLayer>) result;
 
