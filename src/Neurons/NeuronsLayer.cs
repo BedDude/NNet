@@ -37,6 +37,16 @@ namespace NNet.Neurons
             Bias = new double[size];
             Error = new double[size];
             Weights = new double[inputSize, size];
+
+            var rnd = new Random();
+            for(int i = 0; i < size; i++)
+            {
+                Bias[i] = rnd.NextDouble() - 0.5;
+                for(int j = 0; j < inputSize; j++)
+                {
+                    Weights[j, i] = rnd.NextDouble() - 0.5;
+                }
+            }
         }
 
         public void Active(double[] input)
