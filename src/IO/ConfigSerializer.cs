@@ -37,7 +37,7 @@ namespace NNet.IO
                     writer.WriteLine($"layer_size = {network.Layers[i].NeuronsCount}");
                     writer.WriteLine($"input_size = {network.Layers[i].InputSize}");
                     writer.WriteLine($"activation_function = {network.Layers[i].ActivationFunction}");
-                    writer.WriteLine($"path_to_weights = {weightsFile}");
+                    writer.WriteLine($"weights_file = {weightsFile}");
 
                     var weightsFileWithPath = Path.Join(dir, weightsFile);
 

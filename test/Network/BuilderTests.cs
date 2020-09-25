@@ -1,9 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using NNet;
 using NNet.IO;
-using NNet.Builder;
-using NNet.Neurons;
 using NNet.Functions;
 
 namespace NNet.Test.Network

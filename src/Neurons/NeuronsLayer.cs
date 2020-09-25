@@ -64,7 +64,7 @@ namespace NNet.Neurons
 
         public void TranslateError(INeuronsLayer previousLayer)
         {
-            var local = new double[NeuronsCount];
+            var local = new double[previousLayer.NeuronsCount];
             for (int i = 0; i < previousLayer.NeuronsCount; i++)
             {
                 for (int j = 0; j < NeuronsCount; j++)
