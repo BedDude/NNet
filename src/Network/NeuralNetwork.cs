@@ -47,13 +47,7 @@ namespace NNet
             Layers[0].Learn(_lastInput, rate);
         }
 
-        public void SaveWeights()
-        {
-            foreach(var layer in Serializer.FilesTable.Keys)
-            {
-                Serializer.WriteWeights(layer, Serializer.FilesTable[layer]);
-            }
-        }
+        public void SaveWeights() => Serializer.WriteWeights();
 
         public static implicit operator NeuralNetwork(BuilderResult result)
         {

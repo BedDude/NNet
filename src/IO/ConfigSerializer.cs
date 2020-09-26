@@ -9,11 +9,11 @@ namespace NNet.IO
 {
     public class ConfigSerializer : ISerializer
     {
-        public Dictionary<INeuronsLayer, string> FilesTable { get; set; }
+        private Dictionary<INeuronsLayer, string> _filesTable;
 
         public ConfigSerializer()
         {
-            FilesTable = new Dictionary<INeuronsLayer, string>();
+            _filesTable = new Dictionary<INeuronsLayer, string>();
         }
 
         public void CreateNetworkFile(INeuralNetwork network, string pathToDir, string name)
@@ -41,8 +41,8 @@ namespace NNet.IO
 
                     var weightsFileWithPath = Path.Join(dir, weightsFile);
 
-                    FilesTable.Add(network.Layers[i], weightsFileWithPath);
-                    WriteWeights(network.Layers[i], weightsFileWithPath);
+                    _filesTable.Add(network.Layers[i], weightsFileWithPath);
+                    WriteLayerWeights(network.Layers[i], weightsFileWithPath);
                 }
             }
         }
@@ -89,10 +89,10 @@ namespace NNet.IO
 
                     var newLayer = new NeuronsLayer(layerSize, inputSize);
                     newLayer.ActivationFunction = functionType;
-                    ReadWeights(newLayer, weightsFile);
+                    ReadLayerWeights(newLayer, weightsFile);
                     result.Item2.Add(newLayer);
 
-                    FilesTable.Add(newLayer, weightsFile);
+                    _filesTable.Add(newLayer, weightsFile);
                 }
             }
 
@@ -112,7 +112,15 @@ namespace NNet.IO
             }
         }
 
-        public void ReadWeights(INeuronsLayer layer, string file)
+        public void WriteWeights()
+        {
+            foreach (var layer in _filesTable.Keys)
+            {
+                WriteLayerWeights(layer, _filesTable[layer]);
+            }
+        }
+
+        private void ReadLayerWeights(INeuronsLayer layer, string file)
         {
             using (var reader = new StreamReader(file))
             {
@@ -127,7 +135,7 @@ namespace NNet.IO
             }
         }
 
-        public void WriteWeights(INeuronsLayer layer, string file)
+        private void WriteLayerWeights(INeuronsLayer layer, string file)
         {
             using (var writer = new StreamWriter(file))
             {
