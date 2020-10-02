@@ -21,17 +21,18 @@ namespace NNet.IO
             var basis = Path.Join(pathToDir, name);
             var file = basis + ".ncfg";
             var dir = basis + "_weights";
+            var dirName = name + "_weights";
 
             Directory.CreateDirectory(dir);
             using (var writer = new StreamWriter(file))
             {
-                writer.WriteLine($"path_to_weights = {dir}");
+                writer.WriteLine($"path_to_weights = {dirName}");
                 writer.WriteLine($"input_size = {network.InputSize}");
                 writer.WriteLine($"layers_count = {network.LayersCount}");
 
                 for (int i = 0; i < network.LayersCount; i++)
                 {
-                    var weightsFile = $"{dir}_{i}.wgt";
+                    var weightsFile = $"{dirName}_{i}.wgt";
 
                     writer.WriteLine();
                     writer.WriteLine($"layer_size = {network.Layers[i].NeuronsCount}");
