@@ -32,13 +32,24 @@ namespace NNet.Builder
             return _result;
         }
 
-        public BuilderResult BuildFromConfig(string file)
+        public BuilderResult BuildFromConfigFile(string file)
         {
             _result.Serializer = new ConfigSerializer();
             var configResult = _result.Serializer.ReadNetworkFile(file);
 
             _result.InputSize = configResult.Item1;
             _result.Layers = configResult.Item2;
+
+            return _result;
+        }
+
+        public BuilderResult BuildFromNetworkFile(string file)
+        {
+            _result.Serializer = new NetworkSerializer();
+            var network = _result.Serializer.ReadNetworkFile(file);
+
+            _result.InputSize = network.Item1;
+            _result.Layers = network.Item2;
 
             return _result;
         }
@@ -55,7 +66,8 @@ namespace NNet.Builder
             _result.Serializer = type switch
             {
                 SerializerType.None => null,
-                SerializerType.ConfigSerializer => new ConfigSerializer()
+                SerializerType.ConfigSerializer => new ConfigSerializer(),
+                SerializerType.NetworkSerializer => new NetworkSerializer()
             };
 
             return this;

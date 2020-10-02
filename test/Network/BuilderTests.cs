@@ -97,5 +97,33 @@ namespace NNet.Test.Network
             CollectionAssert.AreEqual(TEST_WEIGHTS, result.Layers[0].Weights);
             Assert.AreEqual(ActivationFunctionType.Linear, result.Layers[0].ActivationFunction);
         }
+
+        [TestMethod]
+        public void BuildFromNetworkFile()
+        {
+            double[] TEST_BIAS = { 1 };
+            double[,] TEST_WEIGHTS = { { 1 }, { 1 } };
+            NeuralNetwork TEST_NETWORK = NeuralNetwork.Builder.SetInputSize(2)
+                                                    .SetSerializer(SerializerType.NetworkSerializer)
+                                                    .AddLayer(1, ActivationFunctionType.Linear)
+                                                    .Build();
+
+            TEST_NETWORK.Layers[0].Weights = TEST_WEIGHTS;
+            TEST_NETWORK.Layers[0].Bias = TEST_BIAS;
+
+            TEST_NETWORK.SaveNetwork(@"./../../../Network", "test");
+
+            var result = NeuralNetwork.Builder.BuildFromConfigFile(@"./../../../Network/test.ncfg")
+                                              .ToNetwork();
+
+            Assert.AreEqual(2, result.InputSize);
+            Assert.AreEqual(1, result.LayersCount);
+
+            Assert.AreEqual(2, result.Layers[0].InputSize);
+            Assert.AreEqual(1, result.Layers[0].NeuronsCount);
+            CollectionAssert.AreEqual(TEST_BIAS, result.Layers[0].Bias);
+            CollectionAssert.AreEqual(TEST_WEIGHTS, result.Layers[0].Weights);
+            Assert.AreEqual(ActivationFunctionType.Linear, result.Layers[0].ActivationFunction);
+        }
     }
 }
