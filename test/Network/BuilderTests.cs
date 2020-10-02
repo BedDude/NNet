@@ -113,7 +113,7 @@ namespace NNet.Test.Network
 
             TEST_NETWORK.SaveNetwork(@"./../../../Network", "test");
 
-            var result = NeuralNetwork.Builder.BuildFromConfigFile(@"./../../../Network/test.ncfg")
+            var result = NeuralNetwork.Builder.BuildFromNetworkFile(@"./../../../Network/test.unf")
                                               .ToNetwork();
 
             Assert.AreEqual(2, result.InputSize);

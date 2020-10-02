@@ -34,6 +34,7 @@ namespace NNet.IO
                 ConvertStringsToPairs(info);
 
                 _inputSize = int.Parse(localStorage["is"]);
+                _layers = new List<INeuronsLayer>();
 
                 var layersCount = int.Parse(localStorage["lc"]);
                 for(int i = 0; i < layersCount; i++)
@@ -58,7 +59,7 @@ namespace NNet.IO
                         newLayer.Bias[j] = double.Parse(weights[0]);
                         for(int k = 0; k < inputSize; k++)
                         {
-                            newLayer.Weights[k, j] =double.Parse(weights[k + 1]);
+                            newLayer.Weights[k, j] = double.Parse(weights[k + 1]);
                         }
                     }
 
