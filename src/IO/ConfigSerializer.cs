@@ -7,15 +7,32 @@ using NNet.Functions;
 
 namespace NNet.IO
 {
+    /// <summary>
+    /// A network configuration serializer.
+    /// Saves the network as configuration file (.ncfg) and weights files (.wgt).
+    /// </summary>
     public class ConfigSerializer : ISerializer
     {
+        /// <summary>
+        /// List of the layer - weights file pairs.
+        /// </summary>
         private Dictionary<INeuronsLayer, string> _filesTable;
 
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="ConfigSerializer"/>.
+        /// </summary>
         public ConfigSerializer()
         {
             _filesTable = new Dictionary<INeuronsLayer, string>();
         }
 
+        /// <summary>
+        /// Creates a configuration file and the weights file.
+        /// </summary>
+        /// <param name="network">The network, which will be saved.</param>
+        /// <param name="pathToDir">The directory where the configuration file and directory with the weights files will be created.</param>
+        /// <param name="name">Name of the future .ncfg file without extension.</param>
         public void CreateNetworkFile(INeuralNetwork network, string pathToDir, string name)
         {
             var basis = Path.Join(pathToDir, name);
@@ -48,6 +65,11 @@ namespace NNet.IO
             }
         }
 
+        /// <summary>
+        /// Reads a information about network from config and weights files.
+        /// </summary>
+        /// <param name="file">A .ncfg file.</param>
+        /// <returns>A input size - layers pair.</returns>
         public (int, List<INeuronsLayer>) ReadNetworkFile(string file)
         {
             (int, List<INeuronsLayer>) result;
@@ -113,6 +135,9 @@ namespace NNet.IO
             }
         }
 
+        /// <summary>
+        /// Writes all weights of the network to the files.
+        /// </summary>
         public void WriteWeights()
         {
             foreach (var layer in _filesTable.Keys)
@@ -121,6 +146,11 @@ namespace NNet.IO
             }
         }
 
+        /// <summary>
+        /// Reads all layer's weights from the weights file.
+        /// </summary>
+        /// <param name="layer">The layer of tne network.</param>
+        /// <param name="file">A .wgt file.</param>
         private void ReadLayerWeights(INeuronsLayer layer, string file)
         {
             using (var reader = new StreamReader(file))
@@ -136,6 +166,11 @@ namespace NNet.IO
             }
         }
 
+        /// <summary>
+        /// Writes all layer's weights to the weights file.
+        /// </summary>
+        /// <param name="layer">The layer of tne network.</param>
+        /// <param name="file">A .wgt file.</param>
         private void WriteLayerWeights(INeuronsLayer layer, string file)
         {
             using (var writer = new StreamWriter(file))

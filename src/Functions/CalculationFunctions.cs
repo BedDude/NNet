@@ -4,8 +4,19 @@ using NNet.Neurons;
 
 namespace NNet.Functions
 {
+    /// <summary>
+    /// A functions generator class.
+    /// </summary>
+    /// <remarks>
+    /// It used to activation and training functions generation.
+    /// </remarks>
     internal static class CalculationFunctions
     {
+        /// <summary>
+        /// Generates a function that can calculate the new values of the layer.
+        /// </summary>
+        /// <param name="functionType">Type of activation function.</param>
+        /// <returns>Activation function.</returns>
         public static Func<double[], INeuronsLayer, double[]> GetActivationFunction(ActivationFunctionType functionType)
         {
             var function = GetFunction(functionType);
@@ -31,7 +42,12 @@ namespace NNet.Functions
             };
         }
 
-        public static Func<INeuronsLayer, double[], double, (double[,], double[])> GetFunc(ActivationFunctionType functionType)
+        /// <summary>
+        /// Generates a function that can change layer's weights.
+        /// </summary>
+        /// <param name="functionType">Type of activation function.</param>
+        /// <returns>The training function.</returns>
+        public static Func<INeuronsLayer, double[], double, (double[,], double[])> GetTrainingFunction(ActivationFunctionType functionType)
         {
             var derivative = GetDerivative(functionType);
 
@@ -52,6 +68,11 @@ namespace NNet.Functions
             };
         }
 
+        /// <summary>
+        /// A function that returns activation function.
+        /// </summary>
+        /// <param name="type">Type of activation function.</param>
+        /// <returns>Selected function.</returns>
         private static Func<double, double> GetFunction(ActivationFunctionType type)
         {
             return type switch
@@ -64,6 +85,11 @@ namespace NNet.Functions
             };
         }
 
+        /// <summary>
+        /// A function that returns derivative of activation function.
+        /// </summary>
+        /// <param name="functionType">Type of activation function.</param>
+        /// <returns>Derivative of selected function.</returns>
         private static Func<double, double> GetDerivative(ActivationFunctionType functionType)
         {
             return functionType switch

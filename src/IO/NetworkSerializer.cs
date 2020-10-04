@@ -7,12 +7,44 @@ using NNet.Functions;
 
 namespace NNet.IO
 {
+    /// <summary>
+    /// A network serializer.
+    /// Saves the network as union file of the network (.unf).
+    /// </summary>
     public class NetworkSerializer : ISerializer
     {
+        /// <summary>
+        /// The .unf file.
+        /// </summary>
         private string _file;
+
+        /// <summary>
+        /// The size of the input data of the network.
+        /// </summary>
         private int _inputSize;
+
+        /// <summary>
+        /// The layers of the network.
+        /// </summary>
         private List<INeuronsLayer> _layers;
 
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="NetworkSerializer"/>.
+        /// </summary>
+        public NetworkSerializer()
+        {
+            _file = "";
+            _inputSize = 0;
+            _layers = new List<INeuronsLayer>();
+        }
+
+        /// <summary>
+        /// Creates a .unf file with information about the network.
+        /// </summary>
+        /// <param name="network">The network, which will be saved.</param>
+        /// <param name="pathToDir">The directory where the network file will be created.</param>
+        /// <param name="name">Name of the future .unf file without extension.</param>
         public void CreateNetworkFile(INeuralNetwork network, string pathToDir, string name)
         {
             _inputSize = network.InputSize;
@@ -22,6 +54,11 @@ namespace NNet.IO
             WriteFile();
         }
 
+        /// <summary>
+        /// Reads information about a network from the network file.
+        /// </summary>
+        /// <param name="file">The .unf file.</param>
+        /// <returns>A input size - layers pair.</returns>
         public (int, List<INeuronsLayer>) ReadNetworkFile(string file)
         {
             _file = file;
@@ -91,11 +128,14 @@ namespace NNet.IO
             }
         }
 
-        public void WriteWeights()
-        {
-            WriteFile();
-        }
+        /// <summary>
+        /// Writes all weights of the network.
+        /// </summary>
+        public void WriteWeights() => WriteFile();
 
+        /// <summary>
+        /// Writes all information to the network file.
+        /// </summary>
         private void WriteFile()
         {
             using(var writer = new StreamWriter(_file))
