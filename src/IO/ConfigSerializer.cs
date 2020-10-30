@@ -16,7 +16,7 @@ namespace NNet.IO
         /// <summary>
         /// List of the layer - weights file pairs.
         /// </summary>
-        private Dictionary<INeuronsLayer, string> _filesTable;
+        private Dictionary<INeuronsLayer, FileStream> _filesTable;
 
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace NNet.IO
         /// </summary>
         public ConfigSerializer()
         {
-            _filesTable = new Dictionary<INeuronsLayer, string>();
+            _filesTable = new Dictionary<INeuronsLayer, FileStream>();
         }
 
         /// <summary>
@@ -50,17 +50,19 @@ namespace NNet.IO
                 for (int i = 0; i < network.LayersCount; i++)
                 {
                     var weightsFile = $"{dirName}_{i}.wgt";
+                    var currentLayer = network.Layers[i];
 
                     writer.WriteLine();
-                    writer.WriteLine($"layer_size = {network.Layers[i].NeuronsCount}");
-                    writer.WriteLine($"input_size = {network.Layers[i].InputSize}");
-                    writer.WriteLine($"activation_function = {network.Layers[i].ActivationFunction}");
+                    writer.WriteLine($"layer_size = {currentLayer.NeuronsCount}");
+                    writer.WriteLine($"input_size = {currentLayer.InputSize}");
+                    writer.WriteLine($"activation_function = {currentLayer.ActivationFunction}");
                     writer.WriteLine($"weights_file = {weightsFile}");
 
-                    var weightsFileWithPath = Path.Join(dir, weightsFile);
-
-                    _filesTable.Add(network.Layers[i], weightsFileWithPath);
-                    WriteLayerWeights(network.Layers[i], weightsFileWithPath);
+                    using (var weightsFileStream = new FileStream(Path.Join(dir, weightsFile), FileMode.Create))
+                    {
+                        _filesTable.Add(currentLayer, weightsFileStream);
+                        WriteLayerWeights(currentLayer, weightsFileStream);
+                    }
                 }
             }
         }
@@ -108,14 +110,14 @@ namespace NNet.IO
                     var layerSize = int.Parse(localStorage["layer_size"]);
                     var inputSize = int.Parse(localStorage["input_size"]);
                     var functionType = GetFunctionType(localStorage["activation_function"]);
-                    var weightsFile = Path.Combine(basePath, localStorage["weights_file"]);
+                    var weightsFileStream = new FileStream(Path.Combine(basePath, localStorage["weights_file"]), FileMode.Open);
 
                     var newLayer = new NeuronsLayer(layerSize, inputSize);
                     newLayer.ActivationFunction = functionType;
-                    ReadLayerWeights(newLayer, weightsFile);
+                    ReadLayerWeights(newLayer, weightsFileStream);
                     result.Item2.Add(newLayer);
 
-                    _filesTable.Add(newLayer, weightsFile);
+                    _filesTable.Add(newLayer, weightsFileStream);
                 }
             }
 
@@ -151,16 +153,16 @@ namespace NNet.IO
         /// </summary>
         /// <param name="layer">The layer of tne network.</param>
         /// <param name="file">A .wgt file.</param>
-        private void ReadLayerWeights(INeuronsLayer layer, string file)
+        private void ReadLayerWeights(INeuronsLayer layer, FileStream file)
         {
-            using (var reader = new StreamReader(file))
+            using (var reader = new BinaryReader(file))
             {
                 for (int i = 0; i < layer.NeuronsCount; i++)
                 {
-                    layer.Bias[i] = double.Parse(reader.ReadLine());
-                    for (int j = 0; j < layer.InputSize; j++)
+                    layer.Bias[i] = reader.ReadDouble();
+                    for(int j = 0; j < layer.InputSize; j++)
                     {
-                        layer.Weights[j, i] = double.Parse(reader.ReadLine());
+                        layer.Weights[j, i] = reader.ReadDouble();
                     }
                 }
             }
@@ -171,16 +173,16 @@ namespace NNet.IO
         /// </summary>
         /// <param name="layer">The layer of tne network.</param>
         /// <param name="file">A .wgt file.</param>
-        private void WriteLayerWeights(INeuronsLayer layer, string file)
+        private void WriteLayerWeights(INeuronsLayer layer, FileStream file)
         {
-            using (var writer = new StreamWriter(file))
+            using (var writer = new BinaryWriter(file))
             {
                 for (int i = 0; i < layer.NeuronsCount; i++)
                 {
-                    writer.WriteLine(layer.Bias[i]);
+                    writer.Write(layer.Bias[i]);
                     for (int j = 0; j < layer.InputSize; j++)
                     {
-                        writer.WriteLine(layer.Weights[j, i]);
+                        writer.Write(layer.Weights[j, i]);
                     }
                 }
             }
